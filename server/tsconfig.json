@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es2017",
+        "sourceMap": true,
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "incremental": true,
+        "paths": {
+            "@entities/*": [
+                "src/entities/*.ts"
+            ],
+            "@models/*": ["src/models/*.ts"],
+            "@app/*": ["src/*"]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+}
