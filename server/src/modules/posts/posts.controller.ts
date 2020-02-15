@@ -1,11 +1,13 @@
-import { Controller, Get, Param, Body, Post, UseGuards, Request, Put, Req, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post, UseGuards, Request, Put, Req, Delete, Query, UseFilters } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostDTO } from '../../models/posts/create-post.dto';
+import { CreatePostDTO } from '@models/posts/create-post.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { EditPostDTO } from '../../models/posts/edit-post.dto';
-import { DeletePostDTO } from '../../models/posts/delete-post.dto';
+import { EditPostDTO } from '@models/posts/edit-post.dto';
+import { DeletePostDTO } from '@models/posts/delete-post.dto';
+import { GenericQueryFailedExceptionFilter } from '@app/filters/generic-query-failed.filter';
 
 @Controller('posts')
+@UseFilters(GenericQueryFailedExceptionFilter)
 export class PostsController {
     constructor(
         private readonly postsService: PostsService
@@ -17,7 +19,7 @@ export class PostsController {
     getAll(@Query('skip') skip, @Query('take') take) {
         skip = skip ? skip : 0;
         take = take ? (take > 50 ? 50 : take) : 20;
-        return this.postsService.find({relations: ['author'], order: { createDateTime: 'DESC' }, skip, take});
+        return this.postsService.getPostsWithLikes(skip, take);
     }
 
     @Get(':id')

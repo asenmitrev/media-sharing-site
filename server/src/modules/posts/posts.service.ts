@@ -17,7 +17,7 @@ export class PostsService {
     }
 
     public async getAll() {
-        return await this.postsRepository.find();
+        return this.postsRepository.find();
     }
 
     async findOne(query: any): Promise<Post | undefined> {
@@ -72,5 +72,18 @@ export class PostsService {
             await this.likesRepository.remove(like);
             return { isLiked: false };
         }
+    }
+
+    async getPostsWithLikes(skip: number, limit: number) {
+        //{relations: ['author'], order: { createDateTime: 'DESC' }, skip, take}
+        return await this.postsRepository
+            .createQueryBuilder('post')
+            .loadRelationCountAndMap('post.likesCount', 'post.likes')
+            .leftJoinAndSelect('post.author', 'author')
+            .select('author.name')
+            .orderBy('post.createDateTime', 'DESC')
+            .offset(skip)
+            .limit(limit)
+            .getMany();
     }
 }

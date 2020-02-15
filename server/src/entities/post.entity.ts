@@ -3,6 +3,7 @@ import { PostType } from '../models/post-type.enum';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
 import { Like } from './like.entity';
+import { Comment } from './comment.entity';
 
 @Entity({ name: 'post' })
 export class Post extends BaseEntity {
@@ -24,4 +25,7 @@ export class Post extends BaseEntity {
 
     @OneToMany(type => Like, like => like.post)
     likes: Like[];
+
+    @OneToMany(type => Comment, comment => comment.post)
+    comments: Comment;
 }

@@ -13,12 +13,19 @@ export class UsersService {
     private readonly userRepository: Repository<User>) {
     }
 
-    public async getAll() {
-        return await this.userRepository.find();
+    public async getAll(): Promise<User[]>{
+        return this.userRepository.find();
     }
 
     async findOne(query: any): Promise<User | undefined> {
         return this.userRepository.findOne(query);
+    }
+
+    async findOneWithPassword(query: any): Promise<User | undefined> {
+        return this.userRepository
+            .createQueryBuilder('user')
+            .addSelect('password')
+            .getOne();
     }
 
     async find(query: any): Promise<User[] | undefined> {

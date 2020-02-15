@@ -14,5 +14,5 @@ export class Comment extends BaseEntity {
     @ManyToOne(type => Post, {
         cascade: true
     })
-    category: Post;
+    post: Post;
 }

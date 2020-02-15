@@ -12,7 +12,7 @@ export class AuthService {
     ) { }
 
     async validateUser(username: string, pass: string): Promise<Partial<User>> {
-        const user = await this.usersService.findOne({username});//, password: this.usersService.hashPassword(pass)
+        const user = await this.usersService.findOneWithPassword({username});//, password: this.usersService.hashPassword(pass)
 
         if (user && this.usersService.isValidPassword(pass, user)) {
             const { password, ...result } = user;
